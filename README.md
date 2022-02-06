@@ -32,3 +32,7 @@ Calculates the order total by applying promotion discounts
 }
 ]
 }
+
+Request and Response tested in postman: 
+
+![](../../Downloads/Image 06-02-22 at 6.36 PM.jpg)
