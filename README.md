@@ -1,7 +1,7 @@
 # PromotionEngine
 Calculates the order total by applying promotion discounts
 
-#Input request format
+# Input request format
 {
 "items": [
 {
@@ -11,7 +11,7 @@ Calculates the order total by applying promotion discounts
 ]
 }
 
-#Example :
+# Example :
 {
 "items": [
 {
@@ -35,7 +35,7 @@ Calculates the order total by applying promotion discounts
 
 Request and Response tested in postman: 
 
-#Request
+# Request
 
 {
 "items": [
@@ -58,7 +58,7 @@ Request and Response tested in postman:
 ]
 }
 
-#Response
+# Response
 
 {
 "orderTotalWithoutPromotion": 650,
