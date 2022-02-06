@@ -1,6 +1,16 @@
 # PromotionEngine
 Calculates the order total by applying promotion discounts
 
+**Applicable articles to be added in the cart :** A/B/C/D
+
+**Active Promotions :**
+
+Buy 3 A's for 130
+
+Buy 2 B's for 45 
+
+Buy C & D for 30
+
 # Input request format
 {
 "items": [
