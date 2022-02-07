@@ -11,7 +11,7 @@ Buy 2 B's for 45
 
 Buy C & D for 30
 
-# Input request format
+# Input request json format
 {
 "items": [
 {
@@ -20,6 +20,15 @@ Buy C & D for 30
 }
 ]
 }
+
+# OutPut response json format
+
+{
+"orderTotalWithoutPromotion": 0,
+"orderTotalWithPromotion": 0,
+"savings": 0
+}
+
 
 # Example :
 {
