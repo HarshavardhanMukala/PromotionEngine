@@ -25,9 +25,6 @@ public class PromotionControllerIntegrationTest {
 
     private CartItemsRequest cartItemsRequest;
 
-    @LocalServerPort
-    private int port;
-
     @Test
     public void testScenarioA() {
         Item item1 = new Item();
@@ -50,11 +47,9 @@ public class PromotionControllerIntegrationTest {
 
         HttpEntity<CartItemsRequest> request = new HttpEntity<>(cartItemsRequest);
 
-        ResponseEntity<OrderTotalDetails> response = restTemplate.exchange("http://localhost:"+port+"/promotionEngine", HttpMethod.POST, request, OrderTotalDetails.class);
+        ResponseEntity<OrderTotalDetails> response = restTemplate.postForEntity("/promotionEngine", request, OrderTotalDetails.class);
 
-        //ResponseEntity<OrderTotalDetails> response = restTemplate.postForEntity("/promotionEngine", request, OrderTotalDetails.class);
-
-        assertEquals("100", response.getBody().getOrderTotalWithPromotion());
+        assertEquals("100", response.getBody().getOrderTotalWithPromotion().toString());
 
     }
 
@@ -80,11 +75,9 @@ public class PromotionControllerIntegrationTest {
 
         HttpEntity<CartItemsRequest> request = new HttpEntity<>(cartItemsRequest);
 
-        ResponseEntity<OrderTotalDetails> response = restTemplate.exchange("http://localhost:"+port+"/promotionEngine", HttpMethod.POST, request, OrderTotalDetails.class);
+        ResponseEntity<OrderTotalDetails> response = restTemplate.postForEntity("/promotionEngine", request, OrderTotalDetails.class);
 
-        //ResponseEntity<OrderTotalDetails> response = restTemplate.postForEntity("/promotionEngine", request, OrderTotalDetails.class);
-
-        assertEquals("370", response.getBody().getOrderTotalWithPromotion());
+        assertEquals("370", response.getBody().getOrderTotalWithPromotion().toString());
 
     }
 
@@ -114,11 +107,9 @@ public class PromotionControllerIntegrationTest {
 
         HttpEntity<CartItemsRequest> request = new HttpEntity<>(cartItemsRequest);
 
-        ResponseEntity<OrderTotalDetails> response = restTemplate.exchange("http://localhost:"+port+"/promotionEngine", HttpMethod.POST, request, OrderTotalDetails.class);
+        ResponseEntity<OrderTotalDetails> response = restTemplate.postForEntity("/promotionEngine", request, OrderTotalDetails.class);
 
-        //ResponseEntity<OrderTotalDetails> response = restTemplate.postForEntity("/promotionEngine", request, OrderTotalDetails.class);
-
-        assertEquals("280", response.getBody().getOrderTotalWithPromotion());
+        assertEquals("280", response.getBody().getOrderTotalWithPromotion().toString());
 
     }
 
