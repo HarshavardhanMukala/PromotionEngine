@@ -1,5 +1,6 @@
 package com.example.PromotionEngine.service;
 
+import com.example.PromotionEngine.Exception.ApplicationException;
 import com.example.PromotionEngine.helper.SKUId;
 import com.example.PromotionEngine.helper.prices;
 import com.example.PromotionEngine.model.CartItemsRequest;
@@ -26,7 +27,7 @@ public class PromotionService {
         return totalOrderValue;
     }
 
-    public Integer countOrderTotalWithPromotion(CartItemsRequest cartItems) {
+    public Integer countOrderTotalWithPromotion(CartItemsRequest cartItems) throws ApplicationException {
         int orderTotal = 0;
 
         //check if the cart is eligible for promotion A, if Yes then applyPromoA
@@ -41,53 +42,72 @@ public class PromotionService {
         return orderTotal;
     }
 
-    public Integer applyPromotionA(CartItemsRequest cartItemsRequest) {
+    public Integer applyPromotionA(CartItemsRequest cartItemsRequest) throws ApplicationException {
 
         Integer promoAPrice = 0;
+        Integer individualItemPrice = 0;
+        Integer promoPrice = 0;
 
-        Integer itemA_quantity = cartItemsRequest.getItems().stream().filter(items -> items.getSkuId().equalsIgnoreCase(SKUId.SKUID_A)).mapToInt(item -> item.getQuantity()).sum();
-        Integer individualItemPrice = (itemA_quantity % promoA_limit) * prices.A.getPrice();
-        Integer promoPrice = (itemA_quantity / promoA_limit) * promoA_price;
+        try {
+            Integer itemA_quantity = cartItemsRequest.getItems().stream().filter(items -> items.getSkuId().equalsIgnoreCase(SKUId.SKUID_A)).mapToInt(item -> item.getQuantity()).sum();
+            individualItemPrice = (itemA_quantity % promoA_limit) * prices.A.getPrice();
+            promoPrice = (itemA_quantity / promoA_limit) * promoA_price;
+        } catch (ArithmeticException e) {
+            throw new ApplicationException("Please check the input value : Error occured while applying the promotionA"+e.getMessage());
+        }
+
 
         promoAPrice = promoPrice + individualItemPrice;
 
         return promoAPrice;
     }
 
-    public Integer applyPromotionB(CartItemsRequest cartItemsRequest) {
+    public Integer applyPromotionB(CartItemsRequest cartItemsRequest) throws ApplicationException {
 
         Integer promoBPrice = 0;
+        Integer individualItemPrice = 0;
+        Integer promoPrice = 0;
 
-        Integer itemB_quantity = cartItemsRequest.getItems().stream().filter(items -> items.getSkuId().equalsIgnoreCase(SKUId.SKUID_B)).mapToInt(item -> item.getQuantity()).sum();
-        Integer individualItemPrice = (itemB_quantity % promoB_limit) * prices.B.getPrice();
-        Integer promoPrice = (itemB_quantity / promoB_limit) * promoB_price;
+        try {
+            Integer itemB_quantity = cartItemsRequest.getItems().stream().filter(items -> items.getSkuId().equalsIgnoreCase(SKUId.SKUID_B)).mapToInt(item -> item.getQuantity()).sum();
+            individualItemPrice = (itemB_quantity % promoB_limit) * prices.B.getPrice();
+            promoPrice = (itemB_quantity / promoB_limit) * promoB_price;
+        } catch (ArithmeticException e){
+            throw new ApplicationException("Please check the input value : Error occured while applying the promotionB"+e.getMessage());
+        }
+
 
         promoBPrice = promoPrice + individualItemPrice;
 
         return promoBPrice;
     }
 
-    public Integer applyPromotionCAndD(CartItemsRequest cartItemsRequest) {
+    public Integer applyPromotionCAndD(CartItemsRequest cartItemsRequest) throws ApplicationException {
 
         Integer promoMixPrice = 0;
         Integer promoPrice = 0;
         Integer individualItemPrice = 0;
 
-        Integer itemC_quantity = cartItemsRequest.getItems().stream().filter(items -> items.getSkuId().equalsIgnoreCase(SKUId.SKUID_C)).mapToInt(item -> item.getQuantity()).sum();
-        Integer itemD_quantity = cartItemsRequest.getItems().stream().filter(items -> items.getSkuId().equalsIgnoreCase(SKUId.SKUID_D)).mapToInt(item -> item.getQuantity()).sum();
-        if (itemC_quantity < itemD_quantity && itemC_quantity != 0 && null != itemC_quantity) {
-            promoPrice = itemC_quantity * promoMix_price;
-            individualItemPrice = ((itemC_quantity+itemD_quantity) % itemC_quantity) * prices.D.getPrice();
-        } else if(itemC_quantity.equals(itemD_quantity) && itemD_quantity != 0 && itemC_quantity != 0 && null != itemC_quantity && null != itemD_quantity) {
-            promoPrice = itemC_quantity * promoMix_price;
-        } else if (null != itemD_quantity && itemD_quantity != 0) {
-            promoPrice = itemD_quantity * promoMixPrice;
-            individualItemPrice = ((itemC_quantity+itemD_quantity) % itemD_quantity) * prices.C.getPrice();
-        } else if (itemC_quantity != null) {
-            individualItemPrice = (itemC_quantity) * prices.C.getPrice();
-        } else if (itemD_quantity != null) {
-            individualItemPrice = (itemD_quantity) * prices.D.getPrice();
+        try {
+            Integer itemC_quantity = cartItemsRequest.getItems().stream().filter(items -> items.getSkuId().equalsIgnoreCase(SKUId.SKUID_C)).mapToInt(item -> item.getQuantity()).sum();
+            Integer itemD_quantity = cartItemsRequest.getItems().stream().filter(items -> items.getSkuId().equalsIgnoreCase(SKUId.SKUID_D)).mapToInt(item -> item.getQuantity()).sum();
+            if (itemC_quantity < itemD_quantity && itemC_quantity != 0 && null != itemC_quantity) {
+                promoPrice = itemC_quantity * promoMix_price;
+                individualItemPrice = ((itemC_quantity+itemD_quantity) % itemC_quantity) * prices.D.getPrice();
+            } else if(itemC_quantity.equals(itemD_quantity) && itemD_quantity != 0 && itemC_quantity != 0 && null != itemC_quantity && null != itemD_quantity) {
+                promoPrice = itemC_quantity * promoMix_price;
+            } else if (null != itemD_quantity && itemD_quantity != 0) {
+                promoPrice = itemD_quantity * promoMixPrice;
+                individualItemPrice = ((itemC_quantity+itemD_quantity) % itemD_quantity) * prices.C.getPrice();
+            } else if (itemC_quantity != null) {
+                individualItemPrice = (itemC_quantity) * prices.C.getPrice();
+            } else if (itemD_quantity != null) {
+                individualItemPrice = (itemD_quantity) * prices.D.getPrice();
+            }
+        } catch (ArithmeticException e) {
+            throw new ApplicationException("Please check the input value : Error occured while applying the promotionCAndD"+e.getMessage());
         }
+
 
         promoMixPrice = promoPrice + individualItemPrice;
 

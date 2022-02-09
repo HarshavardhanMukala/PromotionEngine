@@ -1,5 +1,6 @@
 package com.example.PromotionEngine.controller;
 
+import com.example.PromotionEngine.Exception.ApplicationException;
 import com.example.PromotionEngine.helper.SavingsCalculator;
 import com.example.PromotionEngine.model.CartItemsRequest;
 import com.example.PromotionEngine.model.OrderTotalDetails;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.logging.Logger;
 
 @RestController
 public class PromotionController {
@@ -24,7 +27,7 @@ public class PromotionController {
     @PostMapping(value = "/promotionEngine")
     public ResponseEntity<OrderTotalDetails> applyPromotion(
             @RequestBody CartItemsRequest cartItemsRequest
-            ) {
+            ) throws ApplicationException {
 
         OrderTotalDetails orderTotalDetails = new OrderTotalDetails();
 
